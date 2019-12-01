@@ -58,4 +58,5 @@ dkms.conf
 *.log
 
 # Custom
+.DS_Store
 ./tsp
