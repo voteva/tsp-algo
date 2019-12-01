@@ -6,37 +6,35 @@
 
 #define MAX_DISTANCE INT_MAX
 
-Graph *initGraph(unsigned int nodesSize, unsigned int linksSize, Link *links)
+Graph *initGraph(char *fileName)
 {
+    FILE *file = fopen(fileName, "r");
+    if (file == NULL)
+    {
+        perror("Incorrect file name");
+        exit(EXIT_FAILURE);
+    }
+
+    int nodesSize = 0;
+    fscanf(file, "%d", &(nodesSize));
+
     Graph *graph = malloc(sizeof(Graph));
     graph->nodesSize = nodesSize;
-    graph->linksSize = linksSize;
-    graph->nodes = malloc(sizeof(Node) * nodesSize);
-    graph->links = malloc(sizeof(Link) * linksSize);
+    graph->distances = malloc(sizeof(int *) * (graph->nodesSize));
 
-    for (int i = 0; i < nodesSize; i++)
+    for (int i = 0; i < nodesSize; ++i)
     {
-        graph->nodes[i].name = i;
-        graph->nodes[i].visited = false;
-        graph->nodes[i].distance = MAX_DISTANCE;
-    }
-    for (int i = 0; i < linksSize; i++)
-    {
-        graph->links[i].from = links[i].from;
-        graph->links[i].to = links[i].to;
-        graph->links[i].weight = links[i].weight;
-    }
-    return graph;
-}
-
-Node *findNode(Graph *graph, NodeName name)
-{
-    for (int i = 0; i < graph->nodesSize; i++)
-    {
-        if (graph->nodes[i].name == name)
+        graph->distances[i] = malloc(sizeof(int) * (nodesSize));
+        for (int j = 0; j < nodesSize; ++j)
         {
-            return &(graph->nodes[i]);
+            if (!fscanf(file, "%d", &(graph->distances[i][j])))
+            {
+                perror("Incorrect file content");
+                return NULL;
+            }
         }
     }
-    return NULL;
+
+    fclose(file);
+    return graph;
 }
