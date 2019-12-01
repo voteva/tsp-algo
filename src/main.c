@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "graph.h"
+#include "tsp.h"
 
 char *getFileName(int argc, char *argv[])
 {
@@ -17,6 +18,5 @@ int main(int argc, char **argv)
 {
     char *fileName = getFileName(argc, argv);
     Graph *graph = initGraph(fileName);
-
-    printf("%d\n", graph->nodesSize);
+    branchAndBound(graph);
 }

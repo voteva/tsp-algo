@@ -15,17 +15,17 @@ Graph *initGraph(char *fileName)
         exit(EXIT_FAILURE);
     }
 
-    int nodesSize = 0;
-    fscanf(file, "%d", &(nodesSize));
+    int size = 0;
+    fscanf(file, "%d", &(size));
 
     Graph *graph = malloc(sizeof(Graph));
-    graph->nodesSize = nodesSize;
-    graph->distances = malloc(sizeof(int *) * (graph->nodesSize));
+    graph->size = size;
+    graph->distances = malloc(sizeof(int *) * (graph->size));
 
-    for (int i = 0; i < nodesSize; ++i)
+    for (int i = 0; i < size; ++i)
     {
-        graph->distances[i] = malloc(sizeof(int) * (nodesSize));
-        for (int j = 0; j < nodesSize; ++j)
+        graph->distances[i] = malloc(sizeof(int) * (size));
+        for (int j = 0; j < size; ++j)
         {
             if (!fscanf(file, "%d", &(graph->distances[i][j])))
             {
@@ -33,8 +33,21 @@ Graph *initGraph(char *fileName)
                 return NULL;
             }
         }
+        graph->distances[i][i] = MAX_DISTANCE;
     }
 
     fclose(file);
     return graph;
+}
+
+void print(Graph *graph)
+{
+    for (int i = 0; i < graph->size; i++)
+    {
+        for (int j = 0; j < graph->size; j++)
+        {
+            printf("%d ", graph->distances[i][j]);
+        }
+        printf("\n");
+    }
 }

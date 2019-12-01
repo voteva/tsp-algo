@@ -5,10 +5,12 @@
 
 typedef struct
 {
-    unsigned int nodesSize;
+    unsigned int size;
     int **distances;
 } Graph;
 
-Graph *initGraph(char* fileName);
+Graph *initGraph(char *fileName);
+
+void print(Graph *graph);
 
 #endif
