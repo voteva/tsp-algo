@@ -86,8 +86,8 @@ int *branchAndBoundInternal(Graph *graph, int *segments, int segmentsNum)
     segments[segmentsNum++] = iMax;
     segments[segmentsNum++] = jMax;
 
-    //printf("%d ", iMax);
-    //printf("%d \n", jMax);
+    printf("%d ", iMax + 1);
+    printf("%d \n", jMax + 1);
     //print(graph);
 
     return branchAndBoundInternal(graph, segments, segmentsNum);
@@ -107,13 +107,9 @@ int *glueSegments(int *segments, int segmentsSize)
     {
         if (segments[i] == desired)
         {
-            segments[i] = INT_MAX;
             i++;
-
             path[num] = segments[i];
-            segments[i] = INT_MAX;
             desired = path[num];
-
             num++;
             i++;
         } else
