@@ -20,7 +20,7 @@ void printPath(int *path, int size)
     {
         printf("%d -> ", path[i] + 1);
     }
-    printf("%d\n", path[size - 1]);
+    printf("%d\n", path[size - 1] + 1);
 }
 
 int main(int argc, char **argv)
@@ -30,4 +30,7 @@ int main(int argc, char **argv)
     int *path = branchAndBound(graph);
 
     printPath(path, graph->size + 1);
+
+    free(path);
+    free(graph);
 }

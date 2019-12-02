@@ -6,5 +6,5 @@ Branch and bound TSP solver
 
 ```
 make
-./tsp ./resources/graph.txt
+./tsp ./resources/graph4.txt
 ```
