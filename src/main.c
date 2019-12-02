@@ -14,9 +14,20 @@ char *getFileName(int argc, char *argv[])
     return argv[1];
 }
 
+void printPath(int *path, int size)
+{
+    for (int i = 0; i < size - 1; i++)
+    {
+        printf("%d -> ", path[i] + 1);
+    }
+    printf("%d\n", path[size - 1]);
+}
+
 int main(int argc, char **argv)
 {
     char *fileName = getFileName(argc, argv);
     Graph *graph = initGraph(fileName);
-    branchAndBound(graph);
+    int *path = branchAndBound(graph);
+
+    printPath(path, graph->size + 1);
 }

@@ -3,6 +3,6 @@
 
 #include "graph.h"
 
-void branchAndBound(Graph *graph);
+int *branchAndBound(Graph *graph);
 
 #endif

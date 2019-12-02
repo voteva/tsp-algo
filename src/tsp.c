@@ -25,16 +25,26 @@ void reduce(int **matrix, int size)
         int min = getMin(matrix[i], size);
         for (int j = 0; j < size; j++)
         {
-            matrix[i][j] -= min;
+            if (matrix[i][j] != INT_MAX)
+            {
+                matrix[i][j] -= min;
+            }
         }
     }
 }
 
-void branchAndBound(Graph *graph)
+int *branchAndBoundInternal(Graph *graph, int *segments, int segmentsNum)
 {
-    reduce(graph->distances, graph->size);
-    rotate(graph->distances, graph->size);
+    if (segmentsNum >= graph->size * 2)
+    {
+        return segments;
+    }
 
+    // reduce rows
+    reduce(graph->distances, graph->size);
+
+    // reduce columns
+    rotate(graph->distances, graph->size);
     reduce(graph->distances, graph->size);
     rotate(graph->distances, graph->size);
 
@@ -49,14 +59,14 @@ void branchAndBound(Graph *graph)
             {
                 graph->distances[i][j] = INT_MAX;
                 int rowMin = getMin(graph->distances[i], graph->size);
-                rotate(graph->distances, graph->size);
 
+                rotate(graph->distances, graph->size);
                 int colMin = getMin(graph->distances[i], graph->size);
                 rotate(graph->distances, graph->size);
 
                 graph->distances[i][j] = 0;
                 int sum = rowMin + colMin;
-                if (sum > maxScore)
+                if ((sum > maxScore) || (rowMin == INT_MAX && colMin == INT_MAX))
                 {
                     maxScore = sum;
                     iMax = i;
@@ -65,10 +75,64 @@ void branchAndBound(Graph *graph)
             }
         }
     }
-    graph->distances[iMax][jMax] = INT_MAX;
+
+    for (int i = 0; i < graph->size; i++)
+    {
+        graph->distances[iMax][i] = INT_MAX;
+        graph->distances[i][jMax] = INT_MAX;
+    }
     graph->distances[jMax][iMax] = INT_MAX;
 
-    printf("%d ", iMax);
-    printf("%d \n", jMax);
-    print(graph);
+    segments[segmentsNum++] = iMax;
+    segments[segmentsNum++] = jMax;
+
+    //printf("%d ", iMax + 1);
+    //printf("%d \n", jMax + 1);
+    //print(graph);
+
+    return branchAndBoundInternal(graph, segments, segmentsNum);
+}
+
+int *glueSegments(int *segments, int segmentsSize)
+{
+    int pathSize = segmentsSize / 2 + 1;
+    int *path = malloc((pathSize) * sizeof(int));
+
+    path[0] = segments[0];
+    int desired = segments[0];
+    int num = 1;
+    int i = 0;
+
+    while (num < pathSize)
+    {
+        if (segments[i] == desired)
+        {
+            segments[i] = INT_MAX;
+            i++;
+
+            path[num] = segments[i];
+            segments[i] = INT_MAX;
+            desired = path[num];
+
+            num++;
+            i++;
+        } else
+        {
+            i += 2;
+            if (i >= segmentsSize)
+            {
+                i = 0;
+            }
+        }
+    }
+
+    return path;
+}
+
+int *branchAndBound(Graph *graph)
+{
+    int *segments = malloc((graph->size * 2) * sizeof(int));
+    branchAndBoundInternal(graph, segments, 0);
+
+    return glueSegments(segments, graph->size * 2);
 }
