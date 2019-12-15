@@ -11,6 +11,8 @@ typedef struct
 
 Graph *initGraph(char *fileName);
 
-void print(Graph *graph);
+Graph *copyGraph(Graph *graph);
+
+void printGraph(Graph *graph);
 
 #endif

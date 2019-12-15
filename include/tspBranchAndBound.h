@@ -1,5 +1,5 @@
-#ifndef TSP_H
-#define TSP_H
+#ifndef TSP_BRANCH_AND_BOUND_H
+#define TSP_BRANCH_AND_BOUND_H
 
 #include "graph.h"
 

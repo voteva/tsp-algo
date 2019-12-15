@@ -40,7 +40,24 @@ Graph *initGraph(char *fileName)
     return graph;
 }
 
-void print(Graph *graph)
+Graph *copyGraph(Graph *graph)
+{
+    Graph *graphCopy = malloc(sizeof(Graph));
+    graphCopy->distances = malloc(sizeof(int *) * (graph->size));
+    graphCopy->size = graph->size;
+
+    for (int i = 0; i < graph->size; ++i)
+    {
+        graphCopy->distances[i] = malloc(sizeof(int) * (graph->size));
+        for (int j = 0; j < graph->size; ++j)
+        {
+            graphCopy->distances[i][j] = graph->distances[i][j];
+        }
+    }
+    return graphCopy;
+}
+
+void printGraph(Graph *graph)
 {
     for (int i = 0; i < graph->size; i++)
     {

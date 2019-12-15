@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#include "tspBranchAndBound.h"
 #include "graph.h"
 #include "matrix.h"
 
@@ -86,9 +87,9 @@ int *branchAndBoundInternal(Graph *graph, int *segments, int segmentsNum)
     segments[segmentsNum++] = iMax;
     segments[segmentsNum++] = jMax;
 
-    printf("%d ", iMax + 1);
-    printf("%d \n", jMax + 1);
-    //print(graph);
+    //printf("%d ", iMax + 1);
+    //printf("%d \n", jMax + 1);
+    //printGraph(graph);
 
     return branchAndBoundInternal(graph, segments, segmentsNum);
 }
@@ -133,5 +134,6 @@ int *branchAndBound(Graph *graph)
     int *path = glueSegments(segments, graph->size * 2);
 
     free(segments);
+    free(graph);
     return path;
 }
