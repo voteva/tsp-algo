@@ -39,12 +39,16 @@ int main(int argc, char **argv)
 {
     char *fileName = getFileName(argc, argv);
     Graph *graph = initGraph(fileName);
-    //int *path = branchAndBound(copyGraph(graph));
-    int *path = bruteForce(copyGraph(graph));
 
-    printPath(path, graph->size + 1);
-    printPathLength(graph, path);
+    int *pathBB = branchAndBound(copyGraph(graph));
+    printPath(pathBB, graph->size + 1);
+    printPathLength(graph, pathBB);
 
-    free(path);
+    int *pathBF = bruteForce(copyGraph(graph));
+    printPath(pathBF, graph->size + 1);
+    printPathLength(graph, pathBF);
+
+    free(pathBB);
+    free(pathBF);
     free(graph);
 }

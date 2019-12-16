@@ -1,6 +1,7 @@
 # Travelling Salesman Problem
 
-Branch and bound TSP solver
+* Branch and bound solver
+* Brute force solver
 
 ## Execution
 

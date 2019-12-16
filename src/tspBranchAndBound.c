@@ -128,6 +128,8 @@ int *glueSegments(int *segments, int segmentsSize)
 
 int *branchAndBound(Graph *graph)
 {
+    printf("Running Branch-And-Bound solver...\n");
+
     int *segments = malloc((graph->size * 2) * sizeof(int));
     branchAndBoundInternal(graph, segments, 0);
 
