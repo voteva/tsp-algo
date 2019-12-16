@@ -4,7 +4,7 @@
 
 #include "tspBranchAndBound.h"
 #include "graph.h"
-#include "matrix.h"
+#include "utils.h"
 
 int getMin(int *values, int size)
 {
@@ -45,9 +45,9 @@ int *branchAndBoundInternal(Graph *graph, int *segments, int segmentsNum)
     reduce(graph->distances, graph->size);
 
     // reduce columns
-    rotate(graph->distances, graph->size);
+    rotateMatrix(graph->distances, graph->size);
     reduce(graph->distances, graph->size);
-    rotate(graph->distances, graph->size);
+    rotateMatrix(graph->distances, graph->size);
 
     int iMax = 0;
     int jMax = 0;
@@ -61,9 +61,9 @@ int *branchAndBoundInternal(Graph *graph, int *segments, int segmentsNum)
                 graph->distances[i][j] = INT_MAX;
                 int rowMin = getMin(graph->distances[i], graph->size);
 
-                rotate(graph->distances, graph->size);
+                rotateMatrix(graph->distances, graph->size);
                 int colMin = getMin(graph->distances[i], graph->size);
-                rotate(graph->distances, graph->size);
+                rotateMatrix(graph->distances, graph->size);
 
                 graph->distances[i][j] = 0;
                 int sum = rowMin + colMin;

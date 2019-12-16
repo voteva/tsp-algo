@@ -6,35 +6,7 @@
 
 #include "tspBruteForce.h"
 #include "graph.h"
-
-int *copyArray(int *array, int size)
-{
-    int *copyArray = malloc(size * sizeof(int));
-    memcpy(copyArray, array, size * sizeof(int));
-    return copyArray;
-}
-
-bool contains(int value, int *array, int arraySize)
-{
-    for (int i = 0; i < arraySize; i++)
-    {
-        if (value == array[i])
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-int calculatePathLength(Graph *graph, int *path)
-{
-    int length = 0;
-    for (int i = 1; i <= graph->size; i++)
-    {
-        length += graph->distances[path[i - 1]][path[i]];
-    }
-    return length;
-}
+#include "utils.h"
 
 int *bruteForceInternal(Graph *graph, int currentNode, int *visitedNodes, int visitedNodesSize)
 {
@@ -56,7 +28,7 @@ int *bruteForceInternal(Graph *graph, int currentNode, int *visitedNodes, int vi
     int *bestPath = NULL;
     for (int i = 0; i < graph->size; i++)
     {
-        if (contains(i, visitedNodes, visitedNodesSize)) continue;
+        if (isArrayContains(i, visitedNodes, visitedNodesSize)) continue;
         if (graph->distances[currentNode][i] == INT_MAX) continue;
 
         int *path = bruteForceInternal(graph, i, copyArray(visitedNodes, graph->size + 1), visitedNodesSize);

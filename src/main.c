@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "graph.h"
+#include "utils.h"
 #include "tspBranchAndBound.h"
 #include "tspBruteForce.h"
 
@@ -15,23 +16,19 @@ char *getFileName(int argc, char *argv[])
     return argv[1];
 }
 
-void printPath(int *path, int size)
+void printPath(Graph *graph, int *path)
 {
     printf("Path: ");
-    for (int i = 0; i < size - 1; i++)
+    for (int i = 0; i < graph->size; i++)
     {
         printf("%d -> ", path[i] + 1);
     }
-    printf("%d\n", path[size - 1] + 1);
+    printf("%d\n", path[graph->size] + 1);
 }
 
 void printPathLength(Graph *graph, int *path)
 {
-    int length = 0;
-    for (int i = 1; i <= graph->size; i++)
-    {
-        length += graph->distances[path[i - 1]][path[i]];
-    }
+    int length = calculatePathLength(graph, path);
     printf("Length: %d\n", length);
 }
 
@@ -41,11 +38,11 @@ int main(int argc, char **argv)
     Graph *graph = initGraph(fileName);
 
     int *pathBB = branchAndBound(copyGraph(graph));
-    printPath(pathBB, graph->size + 1);
+    printPath(graph, pathBB);
     printPathLength(graph, pathBB);
 
     int *pathBF = bruteForce(copyGraph(graph));
-    printPath(pathBF, graph->size + 1);
+    printPath(graph, pathBF);
     printPathLength(graph, pathBF);
 
     free(pathBB);
