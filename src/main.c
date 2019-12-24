@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include "graph.h"
 #include "utils.h"
@@ -32,20 +33,30 @@ void printPathLength(Graph *graph, int *path)
     printf("Length: %d\n", length);
 }
 
+float getTimeDifferenceSec(struct timeval t0, struct timeval t1)
+{
+    return (double) (t1.tv_usec - t0.tv_usec) / 1000000 + (double) (t1.tv_sec - t0.tv_sec);
+}
+
 int main(int argc, char **argv)
 {
     char *fileName = getFileName(argc, argv);
     Graph *graph = initGraph(fileName);
 
-    int *pathBB = branchAndBound(copyGraph(graph));
-    printPath(graph, pathBB);
-    printPathLength(graph, pathBB);
+    struct timeval timeStart, timeFinish;
+
+    gettimeofday(&timeStart, 0);
 
     int *pathBF = bruteForce(copyGraph(graph));
     printPath(graph, pathBF);
     printPathLength(graph, pathBF);
 
-    free(pathBB);
+    gettimeofday(&timeFinish, 0);
+
+    float elapsed = getTimeDifferenceSec(timeStart, timeFinish);
+
+    printf("Time: %.3f\n", elapsed);
+
     free(pathBF);
     free(graph);
 }
